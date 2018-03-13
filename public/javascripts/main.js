@@ -326,7 +326,7 @@ function watson(url) {
             }
 
 
-            watson_keyword = watson_keyword + "<dt id=\"watson_keyword_relevance_heading\"> Keywords </dt> <br>";
+            watson_keyword = watson_keyword + "<dt id=\"watson_keyword_relevance_heading\"> Keywords<br>&nbsp&nbsp Relevance </dt> <br>";
 
 
             for (var i = 0; i < data.keywords.length; i++) {
