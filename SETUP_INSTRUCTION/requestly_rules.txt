@@ -114,7 +114,18 @@
         "target": "Response",
         "type": "Remove",
         "value": ""
-      }
+      },
+      {
+              "header": "X-Frame-Options",
+              "source": {
+                "key": "Url",
+                "operator": "Contains",
+                "value": "stackoverflow.com"
+              },
+              "target": "Response",
+              "type": "Remove",
+              "value": ""
+            }
     ],
     "ruleType": "Headers",
     "status": "Active"

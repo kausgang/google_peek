@@ -96,7 +96,7 @@ $(document).ready(function () {
 
 
 //hide this after test
-// show_page_url();
+show_page_url();
 
 
 
@@ -232,21 +232,41 @@ function show_page_url(){
         e.preventDefault();
 
 
+
+
         ///LOAD PAGE IN CENTER PANE
         var link = $(this).attr("href");
-        $("#level_0_center").html('<object id="page" width="100%"  height="100%" target="_top" data=' +link+ '>');
-
 
         //alert users about non-supported pages
         if(
 
             link.includes('play.google.com') ||
             link.includes('twitter.com') ||
-            link.includes('facebook.com')
+            link.includes('facebook.com') ||
+            link.includes('github.com')
 
         ){
             alert(link + " cannot be opened here");
         }
+
+        if(
+            link.includes('stackoverflow.com')
+        ){
+
+            alert(link + " will be opened in a new tab");
+            // $("#level_0_center").html('<object id="page" width="100%"  height="100%" target="_parent" data=' +link+ '>');
+            window.open(link,'_blank');
+        }
+
+        else{
+
+            $("#level_0_center").html('<object id="page" width="100%"  height="100%" data=' +link+ '>');
+
+        }
+
+
+
+
 
 
 
