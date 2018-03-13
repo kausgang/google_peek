@@ -1,0 +1,122 @@
+[
+  {
+    "creationDate": 1520954356600,
+    "description": "rule for most visited sites",
+    "id": "Headers_1520954356600",
+    "name": "remove xframe option",
+    "pairs": [
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "youtube.com"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "google.com"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "yahoo"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "facebook.com"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "vimeo.com"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "instagram.com"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "apple.com"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "flipkart.com"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "amazon"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      },
+      {
+        "header": "X-Frame-Options",
+        "source": {
+          "key": "Url",
+          "operator": "Contains",
+          "value": "snapchat.com"
+        },
+        "target": "Response",
+        "type": "Remove",
+        "value": ""
+      }
+    ],
+    "ruleType": "Headers",
+    "status": "Active"
+  }
+]

@@ -1,4 +1,4 @@
-var API_KEY = "AIzaSyCT0_EoBb73V0EElpAJFON23Vzk0C495GE";
+var API_KEY = "AIzaSyDybDSdox21PniXEprVFVClWMZIcsY_j-M";
 var SEARCH_ENGINE_ID = "010470030133584414703:2lmancsivrw";
 
 
@@ -96,7 +96,7 @@ $(document).ready(function () {
 
 
 //hide this after test
-//show_page_url();
+// show_page_url();
 
 
 
@@ -154,29 +154,33 @@ console.log(url);
 
 
             // if no search result is returned
-            if(data.items.length == 0){
+            if(data.searchInformation.totalResults == "0"){
 
                 $("#search_result").html("no data found");
             }
+            else{
 
-            //for each search result, append url to list
-            for(var i=0;i<data.items.length;i++){
+                //for each search result, append url to list
+                for(var i=0;i<data.items.length;i++){
 
-                var result_url = data.items[i].link;
-                var title = data.items[i].title;
-                var snippet = data.items[i].snippet;
+                    var result_url = data.items[i].link;
+                    var title = data.items[i].title;
+                    var snippet = data.items[i].snippet;
 
-                if(result_url.charAt(result_url.length - 1) == '/'){
-                    result_url = result_url.substr(0,result_url.length-1);
+                    if(result_url.charAt(result_url.length - 1) == '/'){
+                        result_url = result_url.substr(0,result_url.length-1);
+                    }
+
+                    show_search_result(result_url,title,snippet);
+
                 }
 
-                show_search_result(result_url,title,snippet);
+
+                //if url is clicked on west pane , show page in center pane & url on south pane
+                show_page_url();
 
             }
 
-
-            //if url is clicked on west pane , show page in center pane & url on south pane
-            show_page_url();
 
 
         },
@@ -184,13 +188,16 @@ console.log(url);
 
             alert(error.responseText);
 
-            console.log(error);
+            console.log("error "+error);
         }
     });
 
 
 
 }
+
+
+
 
 
 function show_search_result(result_url,title,snippet){
@@ -227,26 +234,27 @@ function show_page_url(){
 
         ///LOAD PAGE IN CENTER PANE
         var link = $(this).attr("href");
-        $("#level_0_center").html('<object id="page" width="100%"  height="100%" data=' +link+ '>');
+        $("#level_0_center").html('<object id="page" width="100%"  height="100%" target="_top" data=' +link+ '>');
 
 
         //alert users about non-supported pages
         if(
-            link.includes('youtube.com') ||
-            link.includes('vemio.com') ||
-            link.includes('play.google.com')
 
-        )
-        {
+            link.includes('play.google.com') ||
+            link.includes('twitter.com') ||
+            link.includes('facebook.com')
 
-            alert(link + " will not be displayed as webpage ");
+        ){
+            alert(link + " cannot be opened here");
         }
+
 
 
         //clearout previous url
         $("#level_1_south").html('');
         // ALSO SHOW THE WEBPAGE IN LEVEL1_CENTER FOR TESTING
         $("#level_1_south").html(link);
+
 
     });
 
