@@ -1,3 +1,7 @@
+var API_KEY = "AIzaSyCT0_EoBb73V0EElpAJFON23Vzk0C495GE";
+var SEARCH_ENGINE_ID = "010470030133584414703:2lmancsivrw";
+
+
 
 
 // var myLayout;
@@ -117,8 +121,7 @@ function search_wiki() {
     $('#search_input').val('');
 
 
-    var API_KEY = "AIzaSyCT0_EoBb73V0EElpAJFON23Vzk0C495GE";
-    var SEARCH_ENGINE_ID = "010470030133584414703:2lmancsivrw";
+
 
     var url =
         "https://www.googleapis.com/customsearch/v1?" +
