@@ -1,5 +1,8 @@
 var API_KEY = "AIzaSyDybDSdox21PniXEprVFVClWMZIcsY_j-M";
 var SEARCH_ENGINE_ID = "010470030133584414703:2lmancsivrw";
+var WATSON_USERNAME = "242222de-f588-44d3-a937-0ec6a3c0bd43";
+var WATSON_PASSWORD = "s5IlxCyzjnTT";
+var WATSON_VERSION_DATE = "2017-02-27";
 
 
 
@@ -96,19 +99,12 @@ $(document).ready(function () {
 
 
 //hide this after test
-show_page_url();
+// show_page_and_url();
 
 
 
 
 });
-
-
-
-
-
-
-
 
 
 
@@ -121,8 +117,6 @@ function search_wiki() {
     $('#search_input').val('');
 
 
-
-
     var url =
         "https://www.googleapis.com/customsearch/v1?" +
         "key=" + API_KEY +
@@ -130,13 +124,14 @@ function search_wiki() {
         "&q=" + SEARCH_STRING;
 
 
-console.log(url);
+
 
     //clearout previous search result
     $('#search_result').html('');
 
 
-
+    //ajax call to show the search result
+    //also enables function to respond to url click on search result
     $.ajax({
 
         type:"GET",
@@ -144,13 +139,8 @@ console.log(url);
         // async:false,
         dataType:"json",
 
-
+        //if search was successful
         success: function(data){
-
-
-
-            console.log(data);
-
 
 
             // if no search result is returned
@@ -177,13 +167,16 @@ console.log(url);
 
 
                 //if url is clicked on west pane , show page in center pane & url on south pane
-                show_page_url();
+                show_page_and_url();
+
+
 
             }
 
 
 
         },
+        //if there was an error in search
         error: function(error) {
 
             alert(error.responseText);
@@ -195,8 +188,6 @@ console.log(url);
 
 
 }
-
-
 
 
 
@@ -222,9 +213,7 @@ function show_search_result(result_url,title,snippet){
 
 
 
-
-
-function show_page_url(){
+function show_page_and_url(){
 
     $(".url").click(function (e) {
 
@@ -234,7 +223,7 @@ function show_page_url(){
 
 
 
-        ///LOAD PAGE IN CENTER PANE
+        ///get the URL
         var link = $(this).attr("href");
 
         //alert users about non-supported pages
@@ -254,13 +243,18 @@ function show_page_url(){
         ){
 
             alert(link + " will be opened in a new tab");
-            // $("#level_0_center").html('<object id="page" width="100%"  height="100%" target="_parent" data=' +link+ '>');
             window.open(link,'_blank');
         }
 
         else{
 
+            //open the link in center pane
             $("#level_0_center").html('<object id="page" width="100%"  height="100%" data=' +link+ '>');
+
+
+            //if page is successfully loaded
+            //call watson to show analysis
+            watson(link);
 
         }
 
@@ -279,5 +273,87 @@ function show_page_url(){
     });
 
 }
+
+
+
+
+
+
+function watson(url) {
+
+
+    var parameters = {
+
+        url: url,
+        WATSON_USERNAME: WATSON_USERNAME,
+        WATSON_PASSWORD: WATSON_PASSWORD,
+        WATSON_VERSION_DATE: WATSON_VERSION_DATE
+    };
+
+
+    //ONE WAY OF DOING IT - VALID
+
+
+
+    $.ajax({
+
+        type: "GET",
+        url: '/watson',
+        data: {
+
+            url: url,
+            WATSON_USERNAME: WATSON_USERNAME,
+            'WATSON_PASSWORD': WATSON_PASSWORD,
+            'WATSON_VERSION_DATE': WATSON_VERSION_DATE
+        },
+        success: function (data) {
+            $('#level_1_center').html('');
+
+            console.log(data);
+
+            // check if there is any warning from watson
+            // alert(data.warnings[0].length !== 1);
+
+
+            var watson_keyword = "<dl class=\"watson_keyword\">";
+
+
+            //if warning exists in watson json data then add the warning at the top
+            // https://stackoverflow.com/questions/20804163/check-if-a-key-exists-inside-a-json-object
+            if ('warnings' in data) {
+                watson_keyword = watson_keyword +
+                    "<dt id=\"watson_keyword_warning\">" + data.warnings[0] + "</dt>" + "<br>";
+            }
+
+
+            watson_keyword = watson_keyword + "<dt id=\"watson_keyword_relevance_heading\"> Keywords </dt> <br>";
+
+
+            for (var i = 0; i < data.keywords.length; i++) {
+
+                var key = data.keywords[i].text;
+                var relevance = data.keywords[i].relevance;
+
+
+                watson_keyword = watson_keyword +
+                    "<dt>" + key + "</dt>" +
+                    "<dd>" + relevance + "</dd>"
+
+            }
+
+            $('#level_1_center').html(watson_keyword);
+        },
+        error: function (error) {
+
+            console.log(error);
+        }
+
+    });
+
+
+}
+
+
+
 
 

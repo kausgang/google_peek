@@ -272,3 +272,36 @@ p{
 	display:inline-block;
 
 }
+
+
+
+/*added this for watson keyword*/
+dl.watson_keyword{
+
+	margin: 0;
+	padding: 0;
+}
+
+.watson_keyword dt{
+
+	margin: 0;
+	padding: 0;
+	font-weight: bold;
+}
+
+.watson_keyword dd{
+
+	margin: 0 0 1em 0;
+	padding: 0;
+}
+
+#watson_keyword_warning{
+	color: crimson;
+	/*font-weight: normal;*/
+	font-size: smaller;
+}
+
+#watson_keyword_relevance_heading{
+	color: crimson;
+	font-weight: bold;
+}
