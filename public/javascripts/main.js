@@ -181,6 +181,15 @@ function search_wiki() {
                 }
                 else{
 
+                    for(var j=1;j<=number_of_result/10;j++){ //limiting this to 10 page numbers as more page number disrupts the view and
+
+                        // $('#page_number').html('<a href=\"1\" id=\"' + i + '\">' +i+ '</a>')
+
+                        page_links = page_links + '<a href=\"1\" class=\"google_page\" id=\"' + j + '\">' +j+ ',</a>';
+
+                        //show the page number in the pane
+                        $('#page_number').html(page_links);
+                    }
                 }
 
                 //google search with specific page number
@@ -447,26 +456,32 @@ function navigate_google_page(SEARCH_STRING) {
                 console.log(url);
                 console.log(data);
 
+                    //check if data.items exists
+                    if('items' in data){
 
+                        //for each search result, append url to list
+                        for(var i=0;i<data.items.length;i++){
 
-                    //for each search result, append url to list
-                    for(var i=0;i<data.items.length;i++){
+                            var result_url = data.items[i].link;
+                            var title = data.items[i].title;
+                            var snippet = data.items[i].snippet;
 
-                        var result_url = data.items[i].link;
-                        var title = data.items[i].title;
-                        var snippet = data.items[i].snippet;
+                            if(result_url.charAt(result_url.length - 1) == '/'){
+                                result_url = result_url.substr(0,result_url.length-1);
+                            }
 
-                        if(result_url.charAt(result_url.length - 1) == '/'){
-                            result_url = result_url.substr(0,result_url.length-1);
+                            show_search_result(result_url,title,snippet);
+
                         }
 
-                        show_search_result(result_url,title,snippet);
 
+                        //if url is clicked on west pane , show page in center pane & url on south pane
+                        show_page_and_url();
                     }
+                    else
+                        alert("no result found on google");
 
 
-                    //if url is clicked on west pane , show page in center pane & url on south pane
-                    show_page_and_url();
 
 
 
