@@ -124,6 +124,13 @@ function search_wiki() {
         "&q=" + SEARCH_STRING;
 
 
+    // var url =
+    //     "https://www.googleapis.com/customsearch/v1?" +
+    //     "key=" + API_KEY +
+    //     "&cx=" + SEARCH_ENGINE_ID +
+    //     "&q=" + SEARCH_STRING +
+    //     "&start="+10;
+
 
 
     //clearout previous search result
@@ -142,6 +149,8 @@ function search_wiki() {
         //if search was successful
         success: function(data){
 
+            console.log(url);
+            console.log(data);
 
             // if no search result is returned
             if(data.searchInformation.totalResults == "0"){
@@ -149,6 +158,34 @@ function search_wiki() {
                 $("#search_result").html("no data found");
             }
             else{
+
+
+                //make provision for multiple search result pages
+                //find number of search result
+                var number_of_result = data.searchInformation.totalResults;
+                //per page i can show 10 results
+                //if number of google page is more than 10, then show only 10 google pages
+                var page_links ='';
+                if(number_of_result/10 > 10){
+
+                    for(var j=1;j<=10;j++){ //limiting this to 10 page numbers as more page number disrupts the view and
+
+                        // $('#page_number').html('<a href=\"1\" id=\"' + i + '\">' +i+ '</a>')
+
+                         page_links = page_links + '<a href=\"1\" class=\"google_page\" id=\"' + j + '\">' +j+ ',</a>';
+
+                         //show the page number in the pane
+                        $('#page_number').html(page_links);
+                    }
+
+                }
+                else{
+
+                }
+
+                //google search with specific page number
+                navigate_google_page(SEARCH_STRING);
+
 
                 //for each search result, append url to list
                 for(var i=0;i<data.items.length;i++){
@@ -168,6 +205,7 @@ function search_wiki() {
 
                 //if url is clicked on west pane , show page in center pane & url on south pane
                 show_page_and_url();
+
 
 
 
@@ -357,3 +395,94 @@ function watson(url) {
 
 
 
+function navigate_google_page(SEARCH_STRING) {
+
+    $('.google_page').click(function (e) {
+
+        //prevent the default action to navigating to the page
+        e.preventDefault();
+
+        //get the page number from id
+        var page_number =  $(this).attr('id');
+
+        // alert(page_number);
+
+        // get corresponding google search page number
+        if(page_number == 1){
+            var url =
+                "https://www.googleapis.com/customsearch/v1?" +
+                "key=" + API_KEY +
+                "&cx=" + SEARCH_ENGINE_ID +
+                "&q=" + SEARCH_STRING ;
+
+        }
+        else{
+
+            var google_page_number = (page_number-1) * 10;
+
+            //search google
+            var url =
+                "https://www.googleapis.com/customsearch/v1?" +
+                "key=" + API_KEY +
+                "&cx=" + SEARCH_ENGINE_ID +
+                "&q=" + SEARCH_STRING +
+                "&start="+google_page_number;
+
+        }
+
+
+
+        $('#search_result').html('');
+
+        $.ajax({
+
+            type:"GET",
+            url:url,
+            // async:false,
+            dataType:"json",
+
+            //if search was successful
+            success: function(data){
+
+                console.log(url);
+                console.log(data);
+
+
+
+                    //for each search result, append url to list
+                    for(var i=0;i<data.items.length;i++){
+
+                        var result_url = data.items[i].link;
+                        var title = data.items[i].title;
+                        var snippet = data.items[i].snippet;
+
+                        if(result_url.charAt(result_url.length - 1) == '/'){
+                            result_url = result_url.substr(0,result_url.length-1);
+                        }
+
+                        show_search_result(result_url,title,snippet);
+
+                    }
+
+
+                    //if url is clicked on west pane , show page in center pane & url on south pane
+                    show_page_and_url();
+
+
+
+            },
+            //if there was an error in search
+            error: function(error) {
+
+                alert(error.responseText);
+
+                console.log("error "+error);
+            }
+        });
+       //ajax call ends
+
+
+
+    });
+
+}
