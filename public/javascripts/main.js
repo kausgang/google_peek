@@ -114,7 +114,8 @@ function search_wiki() {
     var SEARCH_STRING = $('#search_input').val();
 
     //reset search field
-    $('#search_input').val('');
+    //keeping the search string to help the user understand what the search ws about
+    // $('#search_input').val('');
 
 
     var url =
